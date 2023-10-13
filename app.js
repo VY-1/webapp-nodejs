@@ -1,5 +1,8 @@
 //jshint esversion:6
 
+const mongodb_user = process.env.mongodb_username;
+const mongodb_pass = process.env.mongodb_pass;
+
 const express = require("express");
 const bodyParser = require("body-parser");
 const date = require(__dirname + "/date.js");
@@ -14,7 +17,8 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
 // mongoose connection to mongodb
-mongoose.connect("mongodb://127.0.0.1:27017/todolistDB");
+// mongoose.connect("mongodb://127.0.0.1:27017/todolistDB");
+mongoose.connect("mongodb+srv://${mongodb_user}:${mongodb_pass}@cluster0.zhrcwre.mongodb.net/todolistDB");
 
 // item schema
 const itemsSchema = new mongoose.Schema({
@@ -127,6 +131,6 @@ app.get("/about", function(req, res){
   res.render("about");
 });
 
-app.listen(3000, function() {
-  console.log("Server started on port 3000");
+app.listen(process.env.PORT || 3000, function() {
+  console.log("Server started on port ${process.env.PORT} || 3000");
 });
